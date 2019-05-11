@@ -1,0 +1,26 @@
+{
+  "name": "consensus19",
+  "version": "1.0.0",
+  "description": "Contract Management platform backed by Quorum",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbonoz/consensus19.git"
+  },
+  "keywords": [
+    "contract",
+    "quorum",
+    "blockchain",
+    "permissioned",
+    "DLT"
+  ],
+  "author": "Chris Buonocore",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cbonoz/consensus19/issues"
+  },
+  "homepage": "https://github.com/cbonoz/consensus19#readme"
+}
