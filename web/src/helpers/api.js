@@ -20,16 +20,35 @@ const library = (function () {
         return sha256.hmac(key, data);
     }
 
-    function createMetaData(file, fileDate, fileHash, address, key, timesViewed) {
+    function createTestMetaData(name, address, key) {
+        const d = new Date();
+        const now = d.toLocaleDateString() + " " + d.toLocaleTimeString();
+
+        if (!name) {
+            name = TEST_FILE_NAME;
+        }
+
         return {
-            hash: fileHash,
+            name: name,
+            timesViewed: 1,
+            lastAccessed: now,
+            lastModifiedDate: now,
+            sizeKb: parseInt(Math.random() * 10000) + "kb",
+            address,
+            key: key
+        };
+    }
+
+
+    function createMetaData(file, fileDate, address, key, privateChecked) {
+        return {
             name: file.name,
-            timesViewed: timesViewed,
+            timesViewed: Math.round(Math.random() * 5),
             lastAccessed: fileDate,
             lastModifiedDate: fileDate,
             sizeKb: file.sizeKb,
+            key: key,
             address,
-            key
         }
     }
 
@@ -101,9 +120,9 @@ const library = (function () {
         BASE_URL: BASE_URL,
         TEST_DEMO_ADDRESS: TEST_DEMO_ADDRESS,
         TEST_FILE_NAME: TEST_FILE_NAME,
-        createMetaData: createMetaData,
+        createMetaData,
         createTestMetaData: createTestMetaData,
-        hashData: hashData,
+        hashData,
         postUploadFile: postUploadFile,
         postGrantAccess: postGrantAccess,
         postGetFile: postGetFile,

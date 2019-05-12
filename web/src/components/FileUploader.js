@@ -39,14 +39,14 @@ const FileUploader = createReactClass({
     handleSignAndSubmit() {
         this.setState({showModal: false});
 
-        const { file, privateKey, privateChecked, fileContent, address} = this.state
-        const d = file.lastModifiedDate;
+        const { currentFile, privateKey, privateChecked, fileContent, address} = this.state
+        const file = currentFile
+        const d = file.lastModifiedDate || new Date()
 
         const fileDate = d.toLocaleDateString() + " " + d.toLocaleTimeString();
-        const fileHash = api.hashData(privateKey, fileDate);
 
         // TODO: passing pkey sec risk, used for hashing server side temporary.
-        const metadata = api.createMetaData(file, fileDate, fileHash, address, privateKey, 1);
+        const metadata = api.createMetaData(file, fileDate, address, privateKey, privateChecked)
 
         api.postUploadFile(fileContent, metadata).then((res) => {
             console.log('success', res);
@@ -54,6 +54,26 @@ const FileUploader = createReactClass({
             console.error('error', err);
         });
     },
+
+    onDrop: (acceptedFiles) => {
+        console.log('accepted', acceptedFiles);
+        const self = this;
+        acceptedFiles.forEach(file => {
+            let nextFiles = [file].concat(self.state.files);
+            self.setState({files: nextFiles});
+            const reader = new FileReader();
+            reader.onload = () => {
+                const fileAsBinaryString = reader.result;
+                // do whatever you want with the file content
+                console.log(file.name, fileAsBinaryString)
+            };
+            reader.onabort = () => console.log('file reading was aborted');
+            reader.onerror = () => console.log('file reading has failed');
+
+            reader.readAsBinaryString(file);
+        });
+    },
+
 
     // Initialized the file
     handleInit() {
@@ -111,25 +131,26 @@ const FileUploader = createReactClass({
                         <hr/>
 
                         <FormGroup controlId="formPrivateKey">
-                            <ControlLabel>Private Key</ControlLabel>
+                            <ControlLabel>Shared Access Key</ControlLabel>
                             <FormControl
                                 type="password"
                                 value={privateKey}
-                                placeholder="Enter private key"
+                                placeholder="Enter access key"
                                 onChange={this.handlePrivateKeyChange}
                             />
-                            <HelpBlock>This is used to prove this file was created/added by you.</HelpBlock>
+                            <HelpBlock>If specified, this key will be required to access/open the file.</HelpBlock>
                         </FormGroup>
 
+                        <br/>
                         <FormGroup controlId="formAddress">
-                            <ControlLabel>Address</ControlLabel>
+                            <ControlLabel>Create internal contract?</ControlLabel>
                             <FormControl
                                 type="checkbox"
                                 value={privateChecked}
-                                placeholder="Make Contract Private - only viewable with Key above"
+                                placeholder="Make Contract Private - only viewable by permissioned parties in network"
                                 onChange={this.handlePrivateChange}
                             />
-                            <HelpBlock>This will be used as a locator for your recorded files.</HelpBlock>
+                            <HelpBlock>This will restrict your contract to permissioned nodes.</HelpBlock>
                         </FormGroup>
 
                     </Modal.Body>

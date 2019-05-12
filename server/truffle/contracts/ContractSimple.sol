@@ -9,14 +9,18 @@ contract ContractSimple {
   string name;
   string metadata;
   bool active;
+  bool is_private;
  
-  constructor(string memory _name, string memory _metadata) public {
+  constructor(string memory _name, string memory _metadata, bool memory _is_private) public {
     owner = msg.sender;
     name = _name;
     metadata = _metadata;
+    is_private = _is_private
     active = true;
+    emit ContractCreated(owner, name)
   }
  
+  event ContractCreated(address creator, string name)
   event ContractEdited(string editor, string metadata);
   event ContractViewed(string viewer);
   event ContractSigned(string signer);

@@ -26,13 +26,13 @@ const FileChain = createReactClass({
     edit(metadata) {
         // TODO: implement
         console.log('edit', metadata)
-        putEdit('chris', metadata.hash).then(console.log)
+        putEdit('chris', metadata.address).then(console.log)
     },
 
     download(metadata) {
         // TODO: implement
         console.log('download', metadata)
-        putView('chris', metadata.hash).then(console.log)
+        putView('chris', metadata.address).then(console.log)
 
 
     },

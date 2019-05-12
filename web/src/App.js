@@ -5,6 +5,8 @@ import Upload from './components/Upload'
 import YourFiles from './components/YourFiles'
 import Footer from './components/Footer'
 import {Navbar, NavItem, NavDropdown, Nav, MenuItem} from 'react-bootstrap'
+import { toast, ToastContainer } from 'react-toastify';
+
 
 import {
     BrowserRouter as Router,
@@ -22,7 +24,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-
+                <ToastContainer enableMultiContainer containerId={'A'} position={toast.POSITION.TOP_CENTER} />
                 <Navbar collapseOnSelect>
                     <Navbar.Header>
                         <Navbar.Brand>

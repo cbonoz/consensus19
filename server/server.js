@@ -11,6 +11,9 @@ const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
 const cs = require('./truffle/build/contracts/ContractSimple.json')
 
+const crypto = require('crypto');
+const hmac = crypto.createHmac('sha256', 'a secret');
+
 const PORT = 9001
 
 const app = express()
@@ -29,6 +32,11 @@ db.defaults({ contracts: [] }).write()
 // const io = require('socket.io')(server, {origins: '*:*'})
 
 const contractsimple = require('./contractsimple')
+
+function getHash(data) {
+    hmac.update(data);
+    return hmac.digest('hex')
+}
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -49,23 +57,14 @@ app.post('/upload', type, function (req, res, next) {
     // req.body contains the text fields
     const fileContent = req.body.file
     const metadata = JSON.parse(req.body.metadata)
-    // TODO: save these metadata fields to Neo.
-    const name = metadata.name
-    const lastModified = metadata.lastModifiedDate
-    const address = metadata.address
-    const fileHash = metadata.hash
-    const key = metadata.key // TODO: confirm signing authority.
-    console.log(fileContent)
-
-    const fileName = address + "_" + name
-
-    fs.writeFileSync(`./contracts/${fileName}`, fileContent)
 
     // Save the encrypted file to the upload directory, and return success.
     contractsimple.deployContract(fileName, metadata, (e, address) => {
         console.log('deploy contract', e, address)
+        metadata.address = address
+        fs.writeFileSync(`./contracts/${address}`, fileContent)
         db.get('contracts').push({ address, metadata}).write()
-        return res.json(contract)
+        return res.json(metadata)
     })
 })
 
@@ -84,8 +83,6 @@ app.put('/edit/:address/:user', (req, res) => {
 
     cs.edited(address)
 })
-
-
 /* API endpoints below */
 
 // Return a list of files associated with the given address.
