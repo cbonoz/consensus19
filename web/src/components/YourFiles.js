@@ -136,7 +136,7 @@ const YourFiles = createReactClass({
                         <Modal.Title>{(currentMetadata && currentMetadata.name) || 'Contract'}</Modal.Title>
                     </Modal.Header>
                     < Modal.Body >
-                        <h4>Blockchain record</h4>
+                        <h4>Found blockchain record</h4>
                         <FileDetails file={currentMetadata}/>
                     </Modal.Body>
                     <Modal.Footer>
