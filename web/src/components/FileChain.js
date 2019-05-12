@@ -80,7 +80,7 @@ const FileChain = createReactClass({
                     < Modal.Body >
                         <FileDetails file={metadata}/>
                         {metadata && metadata.address && <p><b>Address: </b>{capLength(metadata.address, 50)}</p>}
-                        <h5>Original Contract Transaction Hash:</h5>
+                        <h5><b>Original Contract Transaction Hash:</b></h5>
                             {currentTransaction && <p>{currentTransaction}</p>}
                         <hr/>
                         <hr/>
