@@ -222,7 +222,7 @@ const library = (function() {
     });
 
     // cb immediately for demo
-    cb(null, DEFAULT_ADDRESS)
+    setTimeout(()=>cb(null, DEFAULT_ADDRESS), 1000)
   }
 
   // cb(err, result)

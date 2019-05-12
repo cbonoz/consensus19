@@ -85,8 +85,7 @@ const FileChain = createReactClass({
                         <hr/>
                         <hr/>
                         <Button className='delete-button' bsStyle="danger">Delete File</Button>
-                        <p>Note that deleting a file will remove the ability of others to view or edit the file by making it "inactive". <br/>
-                        The record/history will still be preserved on the blockchain.</p>
+                        <p>Note that deleting a file will remove the ability of others to view or edit the file by making it "inactive". The contract record and history will still be preserved on the blockchain.</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button bsStyle="success" onClick={() => this.edit(metadata)}>Upload new version</Button>
