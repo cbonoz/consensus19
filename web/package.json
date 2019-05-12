@@ -1,0 +1,28 @@
+{
+  "name": "consensus19",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "create-react-class": "^15.6.3",
+    "fs": "^0.0.1-security",
+    "js-sha256": "^0.9.0",
+    "path-to-regexp": "^3.0.0",
+    "react": "^16.2.0",
+    "react-bootstrap": "^0.32.1",
+    "react-columns": "^1.1.0",
+    "react-dom": "^16.2.0",
+    "react-dropzone": "^4.2.9",
+    "react-filepond": "^1.1.0",
+    "react-flip-move": "^3.0.1",
+    "react-rotating-text": "^1.4.1",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
