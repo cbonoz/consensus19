@@ -66,10 +66,10 @@ GET /api/contracts
         <img src="./screenshots/home.png" width="600" style="margin: 0 auto"/>
     <h3>Uploading a Contract</h3>
         <img src="./screenshots/upload.png" width="600" style="margin: 0 auto"/>
-    <h3>Sharing a Contract</h3>
-        <img src="./screenshots/share.png" width="600" style="margin: 0 auto"/>
-    <h3>Signing a Contract</h3>
-        <img src="./screenshots/sign.png" width="600" style="margin: 0 auto"/>
+    <h3>Specify Contract Details</h3>
+        <img src="./screenshots/details.png" width="600" style="margin: 0 auto"/>
+    <h3>Viewing a Contract</h3>
+        <img src="./screenshots/view.png" width="600" style="margin: 0 auto"/>
 </div>
 
 ### TODO:
