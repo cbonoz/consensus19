@@ -4,10 +4,11 @@ const library = (function () {
     const BASE_URL = `http://localhost:${PORT}`;
 
     const axios = require('axios');
+    var faker = require('faker');
+
     const sha256 = require('js-sha256').sha256;
 
     const TEST_DEMO_ADDRESS = "AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y";
-    const TEST_FILE_NAME = "java.jpg";
 
     const getHeaders = () => {
         const token = localStorage.getItem("tok");
@@ -15,6 +16,11 @@ const library = (function () {
             headers: {Authorization: "Bearer " + token}
         };
     };
+
+    const generateFileName = () => {
+        const name = faker.address.city()
+        return `${name} Rental.pdf`
+    }
 
     function hashData(key, data) {
         return sha256.hmac(key, data);
@@ -25,7 +31,7 @@ const library = (function () {
         const now = d.toLocaleDateString() + " " + d.toLocaleTimeString();
 
         if (!name) {
-            name = TEST_FILE_NAME;
+            name = generateFileName()
         }
 
         return {
@@ -34,31 +40,33 @@ const library = (function () {
             lastAccessed: now,
             lastModifiedDate: now,
             sizeKb: parseInt(Math.random() * 10000) + "kb",
+            sharedKey: faker.random.uuid(),
             address,
-            key: key
         };
     }
 
 
-    function createMetaData(file, fileDate, address, key, privateChecked) {
+    function createMetaData(file, sizeKb, fileDate, address, sharingKey, signingKey, privateChecked) {
         return {
             name: file.name,
-            timesViewed: Math.round(Math.random() * 5),
+            timesViewed: 1,
             lastAccessed: fileDate,
             lastModifiedDate: fileDate,
-            sizeKb: file.sizeKb,
-            key: key,
+            sizeKb: sizeKb,
+            sharingKey: sharingKey,
+            signingKey: signingKey,
+            privateChecked: privateChecked,
             address,
         }
     }
 
     // User request for granting permissions to another external user (by address) for accessing/downloading this file.
-    function postGrantAccess(fileName, targetPublicKey, ownerPrivateKey) {
+    function postGrantAccess(fileName, targetPublicKey, ownerSharingKey) {
         const url = `${BASE_URL}/api/file`;
         return axios.post(url, {
             fileName: fileName,
             targetPublicKey: targetPublicKey,
-            ownerPrivateKey: ownerPrivateKey
+            ownerSharingKey: ownerSharingKey
         }).then(response => {
             const data = response.data;
             return data;
@@ -82,20 +90,9 @@ const library = (function () {
         });
     }
 
-    function getFileMetadatasForAddress(address) {
-        const url = `${BASE_URL}/api/files/${address}`;
+    function getFilesForSharedKey(key) {
+        const url = `${BASE_URL}/api/files/${key}`;
         return axios.get(url, getHeaders()).then(response => response.data);
-    }
-
-    function postGetFile(address, fileName) {
-        const url = `${BASE_URL}/api/file`;
-        return axios.post(url, {
-            address: address,
-            fileName: fileName
-        }).then(response => {
-            const data = response.data;
-            return data;
-        });
     }
 
     function putView(name, address) {
@@ -119,14 +116,13 @@ const library = (function () {
         putEdit,
         BASE_URL: BASE_URL,
         TEST_DEMO_ADDRESS: TEST_DEMO_ADDRESS,
-        TEST_FILE_NAME: TEST_FILE_NAME,
+        generateFileName,
         createMetaData,
         createTestMetaData: createTestMetaData,
         hashData,
         postUploadFile: postUploadFile,
         postGrantAccess: postGrantAccess,
-        postGetFile: postGetFile,
-        getFileMetadatasForAddress: getFileMetadatasForAddress
+        getFilesForSharedKey
     }
 
 })();

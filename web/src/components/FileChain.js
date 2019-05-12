@@ -1,10 +1,11 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
-import {Button, ControlLabel, HelpBlock, FormControl, FormGroup, ListGroup, ListGroupItem, Modal} from 'react-bootstrap';
+import {Button, Form, ListGroupItem, Modal, ListGroup} from 'react-bootstrap';
 import FlipMove from 'react-flip-move';
 import Columns from 'react-columns';
 import PropTypes from 'prop-types';
 import FileDetails from "./FileDetails";
+import { capLength } from '../util'
 
 import { putEdit, putView } from '../helpers/api'
 
@@ -53,7 +54,7 @@ const FileChain = createReactClass({
         return (
             <div className="file-chain">
                 <ListGroup>
-                    <ListGroupItem bsStyle="success">Public Contracts</ListGroupItem>
+                    <ListGroupItem bsStyle="success">Your Previously Uploaded Contracts</ListGroupItem>
                     <Columns columns={2}>
                         {blockFiles && blockFiles.map((file, i) => {
                             return <FlipMove key={i}
@@ -74,23 +75,11 @@ const FileChain = createReactClass({
                     </Modal.Header>
                     < Modal.Body >
                         <FileDetails file={metadata}/>
+                        {metadata && metadata.address && <p><b>Address: </b>{capLength(metadata.address, 50)}</p>}
                         <hr/>
-                        <Button bsStyle="info">Grant Access</Button>
-                        <HelpBlock>Is this your file? Grant Access to other users by clicking here.</HelpBlock>
-
-                        <FormGroup controlId="formBasicText">
-
-                            <ControlLabel>Enter your authorized key to download</ControlLabel>
-                            <FormControl
-                                type="text"
-                                value={this.state.privateKey}
-                                placeholder="Enter key"
-                                onChange={this.handleKeyChange}
-                            />
-
-                            <FormControl.Feedback />
-                        </FormGroup>
-
+                        <Button className='delete-button' bsStyle="danger">Delete File</Button>
+                        <p>Note that deleting a file will remove the ability of others to view or edit the file by making it "inactive". <br/>
+                        The record/history will still be preserved on the blockchain.</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button bsStyle="success" onClick={() => this.edit(metadata)}>Upload New</Button>

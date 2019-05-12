@@ -9,12 +9,25 @@ body {
     background: none !important;
 }
 
+.contract-access-input {
+    margin: 40px;
+}
+
 /*Col 1*/
 .file-uploader {
     background: white;
     border-radius: 25px;
     margin-bottom: 5px;
     padding: 20px;
+}
+
+.help-text {
+    font-style: italic;
+}
+
+.delete-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 /*Col 2*/
@@ -39,6 +52,10 @@ body {
 
 .create-button {
     margin-top: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .form-control {

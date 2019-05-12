@@ -6,22 +6,23 @@ pragma solidity ^0.5.0;
 contract ContractSimple {
  
   address public owner;
+
   string name;
   string metadata;
+  string uploadUrl;
   bool active;
-  bool is_private;
+  bool isPrivate;
  
-  constructor(string memory _name, string memory _metadata, bool memory _is_private) public {
+  constructor(string memory _name, string memory _uploadUrl, string memory _metadata, bool _isPrivate) public {
     owner = msg.sender;
     name = _name;
     metadata = _metadata;
-    is_private = _is_private
+    isPrivate = _isPrivate;
+    uploadUrl = _uploadUrl;
     active = true;
-    emit ContractCreated(owner, name)
   }
  
-  event ContractCreated(address creator, string name)
-  event ContractEdited(string editor, string metadata);
+  event ContractEdited(string editor, string uploadUrl, string metadata);
   event ContractViewed(string viewer);
   event ContractSigned(string signer);
 
@@ -32,8 +33,8 @@ contract ContractSimple {
   modifier onlyBefore(uint _time) {require(now < _time); _;}
   modifier onlyAfter(uint _time) {require(now > _time); _;}
 
-  function edited(string memory _username, string memory _metadata) public {
-    emit ContractEdited(_username, _metadata);
+  function edited(string memory _username, string memory _uploadUrl, string memory _metadata) public {
+    emit ContractEdited(_username, _uploadUrl, _metadata);
   }
 
   function signed(string memory _username) public {

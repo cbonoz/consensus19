@@ -16,6 +16,11 @@ class Upload extends React.Component {
         files: []
     }
 
+    constructor(props) {
+        super(props)
+        this.addBlocks = this.addBlocks.bind(this)
+    }
+
     componentDidMount() {
        
         console.log(api.BASE_URL)
@@ -32,7 +37,6 @@ class Upload extends React.Component {
         const block2 = api.createTestMetaData()
         const block3 = api.createTestMetaData()
         this.addBlocks([block, block2, block3])
-
     }
 
     getAccount() {
@@ -52,8 +56,9 @@ class Upload extends React.Component {
     }
 
     addBlocks(blocks) {
+        const { blockFiles } = this.state
         this.setState({
-            blockFiles: blocks.concat(this.state.blockFiles)
+            blockFiles: blockFiles.concat(blocks)
         })
     }
 
@@ -80,10 +85,10 @@ class Upload extends React.Component {
                 <Grid>
                     <Row className="show-grid">
                         <Col xs={12} md={5}>
-                            <FileUploader/>
+                            <FileUploader addBlocks={(blocks) => this.addBlocks(blocks)}/>
                         </Col>
                         <Col xs={12} md={7}>
-                            {/* <FileChain blockFiles={blockFiles}/> */}
+                            <FileChain blockFiles={blockFiles}/>
                         </Col>
                     </Row>
                 </Grid>

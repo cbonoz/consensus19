@@ -15,16 +15,20 @@ import {
 } from 'react-router-dom'
 
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css';
 
 // import contractsimpleLogo from './assets/contractsimple.png'
 import contractsimpleLogo from './assets/contractsimple.png'
+
+// Call it once in your app. At the root of your app is the best place
+toast.configure()
 
 class App extends Component {
 
     render() {
         return (
             <div className="App">
-                <ToastContainer enableMultiContainer containerId={'A'} position={toast.POSITION.TOP_CENTER} />
+                <ToastContainer position={toast.POSITION.TOP_CENTER} />
                 <Navbar collapseOnSelect>
                     <Navbar.Header>
                         <Navbar.Brand>
@@ -43,9 +47,9 @@ class App extends Component {
                             <NavItem eventKey={2} href="/files">
                                 Find Your Contracts
                             </NavItem>
-                            <NavItem eventKey={3} href="/api">
+                            {/* <NavItem eventKey={3} href="/api">
                                 API
-                            </NavItem>
+                            </NavItem> */}
                             {/* <NavItem eventKey={3} href="/about">
                                 About Us
                             </NavItem> */}

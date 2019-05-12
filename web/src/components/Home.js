@@ -1,7 +1,6 @@
 import React from "react";
 
 import FileChain from "./FileChain";
-import FileUploader from "./FileUploader";
 import createReactClass from "create-react-class";
 import { Jumbotron, Button, Grid, Row, Col } from "react-bootstrap";
 import ReactRotatingText from "react-rotating-text";
@@ -14,7 +13,7 @@ import PropTypes from "prop-types";
 
 const MAX_BLOCKS = 15;
 
-const ROTATING_ITEMS = ["private", "audited", "distributed", "simple"];
+const ROTATING_ITEMS = ["A private", "An auditable", "A distributed", "A secure"];
 
 const Home = createReactClass({
   render() {
@@ -28,14 +27,14 @@ const Home = createReactClass({
         />
 
         <p className="header-text-h2">
-          A&nbsp;
-          <ReactRotatingText className="rotating-bold" items={ROTATING_ITEMS} />
-          &nbsp;
+          {/* <ReactRotatingText className="rotating-bold" items={ROTATING_ITEMS} /> */}
+          An auditable
           <br />
           real estate contract management platform
         </p>
         <p className="header-text-h3">
-          <b>No</b> Username or Password required.
+          <br/>
+          {/* <b>No</b> Username or Password required. */}
         </p>
         <p>
           <Link to="/upload">

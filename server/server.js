@@ -9,7 +9,6 @@ const http = require('http')
 // https://github.com/expressjs/multer
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
-const cs = require('./truffle/build/contracts/ContractSimple.json')
 
 const crypto = require('crypto');
 const hmac = crypto.createHmac('sha256', 'a secret');
@@ -24,6 +23,20 @@ const FileSync = require('lowdb/adapters/FileSync')
 
 const adapter = new FileSync('db.json')
 const db = low(adapter)
+
+db._.mixin({
+    upsert: function(collection, obj, key) {
+      key = key || 'id';
+      for (var i = 0; i < collection.length; i++) {
+        var el = collection[i];
+        if(el[key] === obj[key]){
+          collection[i] = obj;
+          return collection;
+        }
+      };
+      collection.push(obj);
+    }
+  });
 
 // Set some defaults (required if your JSON file is empty)
 // TODO: replace with persistent mappings.
@@ -57,13 +70,26 @@ app.post('/upload', type, function (req, res, next) {
     // req.body contains the text fields
     const fileContent = req.body.file
     const metadata = JSON.parse(req.body.metadata)
-
+    const fileName = metadata.name
+    const uploadUrl = `./contracts/${fileName}`
+    
     // Save the encrypted file to the upload directory, and return success.
-    contractsimple.deployContract(fileName, metadata, (e, address) => {
-        console.log('deploy contract', e, address)
+    contractsimple.deployContract(fileName, uploadUrl, JSON.stringify(metadata), metadata.privateChecked || false, (e, address) => {
+        console.log('errors', e)
+        console.log('deploy contract', address)
+        // metadata.address = address
+        fs.writeFileSync(uploadUrl, fileContent)
         metadata.address = address
-        fs.writeFileSync(`./contracts/${address}`, fileContent)
-        db.get('contracts').push({ address, metadata}).write()
+
+        // Save and store the contract address -> contract mapping.
+        const contracts = db.get('contracts')
+        const existing = db.find({address}).value()
+        if (existing) {
+            contracts.find({address}).assign(metadata).write()
+        } else {
+            contracts.push(metadata).write()
+        }
+
         return res.json(metadata)
     })
 })
@@ -73,28 +99,28 @@ app.put('/view/:address/:user', (req, res) => {
     const user = req.params.user
     console.log('address', address)
 
-    cs.viewed(address)
+//     const batch = new web3.BatchRequest();
+// batch.add(web3.eth.getBalance.request('0x0000000000000000000000000000000000000000', 'latest'));
+// batch.add(contract.methods.balance(address).call.request({from: '0x0000000000000000000000000000000000000000'}));
+// batch.execute().then(...);
+    const contract = contractsimple.getContract(address)
+    contract.methods.viewed(user).send(contractsimple.getDefaultAccount()).then((res)=>{
+        console.log('Created View Event on quorum', address, user, res);
+    })
 })
 
-app.put('/edit/:address/:user', (req, res) => {
-    const address = req.params.address
-    const user = req.params.user
-    console.log('address', address)
-
-    cs.edited(address)
-})
+// TODO: add edit/sign features.
 /* API endpoints below */
 
-// Return a list of files associated with the given address.
-app.get('/api/files/:address', (req, res) => {
-    const address = req.params.address
-    console.log('address', addEventListener)
-    const data = db.get('posts').find({ address }).value()
+// Return a list of files associated with the given key.
+app.get('/api/files/:sharingKey', (req, res) => {
+    const sharingKey = req.params.sharingKey
+    const data = db.get('contracts').find({ sharingKey }).value()
     return res.json(data || {})
 })
 
 app.get('/api/files', (req, res) => {
-    const data = db.get('posts').find().value()
+    const data = db.get('contracts').find().value()
     return res.json(data || {})
 })
 
