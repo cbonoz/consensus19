@@ -21,36 +21,6 @@ Use truffle for smart contract deployment, and quorum with web3. Hashes are reco
 
 Going after the Coindesk main challenge and the Quorum Privacy subchallenge.
 
-### API
-Record new contract based on an uploaded file
-<pre>
-POST /api/contracts/add
-[
-    {
-        "contractId": XXXX, // uuid of the received contract. (id)
-        "locationId": XXXXX, // uuid of the receiving location (id)
-        "lat": XXXX, // latitude of the receiver (float)
-        "lng": XXX // longitude of the receiver (float)
-        "timeMs": XXXXX // time of contract (time ms)
-    },
-    ...
-]
-</pre>
-
-
-Get the history of an contract
-<pre>
-GET /api/contract/history
-{
-    "address": XXXX // address of the desired contract.
-}
-</pre>
-
-Return all contracts
-<pre>
-GET /api/contracts
-</pre>
-
 ### Structure
 
 <ul>
