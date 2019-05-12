@@ -138,11 +138,6 @@ const YourFiles = createReactClass({
                     < Modal.Body >
                         <h4>Blockchain record</h4>
                         <FileDetails file={currentMetadata}/>
-
-                        <h5>Original Transaction</h5>
-                            {currentTransaction && <p>currentTransaction}</p>}
-                        <hr/>
-
                     </Modal.Body>
                     <Modal.Footer>
                         <Button bsStyle="default" onClick={this.edit}>Edit</Button>

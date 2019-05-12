@@ -6,7 +6,6 @@ pragma solidity ^0.5.0;
 contract ContractSimple {
  
   address public owner;
-
   string name;
   string metadata;
   string uploadUrl;
@@ -26,10 +25,7 @@ contract ContractSimple {
   event ContractViewed(string viewer);
   event ContractSigned(string signer);
 
-  /// Modifiers are a convenient way to validate inputs to
-  /// functions. `onlyBefore` is applied to `bid` below:
-  /// The new function body is the modifier's body where
-  /// `_` is replaced by the old function body.
+  /// Input validators.
   modifier onlyBefore(uint _time) {require(now < _time); _;}
   modifier onlyAfter(uint _time) {require(now > _time); _;}
 

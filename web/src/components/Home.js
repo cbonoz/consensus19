@@ -27,8 +27,8 @@ const Home = createReactClass({
         />
 
         <p className="header-text-h2">
-          {/* <ReactRotatingText className="rotating-bold" items={ROTATING_ITEMS} /> */}
-          An auditable
+          <ReactRotatingText className="rotating-bold" items={ROTATING_ITEMS} />
+          {/* An auditable */}
           <br />
           real estate contract management platform
         </p>

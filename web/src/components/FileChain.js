@@ -9,6 +9,8 @@ import { capLength } from '../util'
 
 import { putEdit, putView } from '../helpers/api'
 
+const DEFAULT_TRANSACTION = '0x2446f1fd773fbb9f080e674b60c6a033c7ed7427b8b9413cf28a2a4a6da9b56c'
+
 const FileChain = createReactClass({
 
     componentWillMount() {
@@ -16,6 +18,7 @@ const FileChain = createReactClass({
             showModal: false,
             currentMetadata: null,
             currentKey: null,
+            currentTransaction: DEFAULT_TRANSACTION
         });
     },
 
@@ -50,6 +53,7 @@ const FileChain = createReactClass({
         const self = this;
         const metadata = self.state.currentMetadata;
         const blockFiles = self.props.blockFiles;
+        const { currentTransaction } = this.state
 
         return (
             <div className="file-chain">
@@ -76,13 +80,16 @@ const FileChain = createReactClass({
                     < Modal.Body >
                         <FileDetails file={metadata}/>
                         {metadata && metadata.address && <p><b>Address: </b>{capLength(metadata.address, 50)}</p>}
+                        <h5>Original Contract Transaction Hash:</h5>
+                            {currentTransaction && <p>{currentTransaction}</p>}
+                        <hr/>
                         <hr/>
                         <Button className='delete-button' bsStyle="danger">Delete File</Button>
                         <p>Note that deleting a file will remove the ability of others to view or edit the file by making it "inactive". <br/>
                         The record/history will still be preserved on the blockchain.</p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button bsStyle="success" onClick={() => this.edit(metadata)}>Upload New</Button>
+                        <Button bsStyle="success" onClick={() => this.edit(metadata)}>Upload new version</Button>
                         <Button bsStyle="info" onClick={() => this.download(metadata)}>Download</Button>
                         <Button bsStyle="danger" onClick={this.handleClose}>Close</Button>
                         {/*<Button bsStyle="danger" onClick={this.handleClose}>Grant Access</Button>*/}

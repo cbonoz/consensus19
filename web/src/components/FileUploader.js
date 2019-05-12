@@ -30,7 +30,6 @@ const FileUploader = createReactClass({
 
     },
 
-
     handlePrivateChange(e) {
         this.setState({private: e.target.value})
     },
@@ -132,7 +131,7 @@ const FileUploader = createReactClass({
         return (
             <div className="file-uploader">
                 <ListGroup>
-                    <ListGroupItem bsStyle="info">Upload new contract</ListGroupItem>
+                    <ListGroupItem bsStyle="info">Upload new version</ListGroupItem>
                     <ListGroupItem>
                         <FilePond allowMultiple={true}
                                   maxFiles={3}

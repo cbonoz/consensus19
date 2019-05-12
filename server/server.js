@@ -72,18 +72,18 @@ app.post('/upload', type, function (req, res, next) {
     const metadata = JSON.parse(req.body.metadata)
     const fileName = metadata.name
     const uploadUrl = `./contracts/${fileName}`
-    
+
     // Save the encrypted file to the upload directory, and return success.
     contractsimple.deployContract(fileName, uploadUrl, JSON.stringify(metadata), metadata.privateChecked || false, (e, address) => {
         console.log('errors', e)
-        console.log('deploy contract', address)
+        console.log(`deploy contract ${address} for ${fileName}`)
         // metadata.address = address
         fs.writeFileSync(uploadUrl, fileContent)
         metadata.address = address
 
         // Save and store the contract address -> contract mapping.
         const contracts = db.get('contracts')
-        const existing = db.find({address}).value()
+        const existing = contracts.find({address}).value()
         if (existing) {
             contracts.find({address}).assign(metadata).write()
         } else {
@@ -97,16 +97,16 @@ app.post('/upload', type, function (req, res, next) {
 app.put('/view/:address/:user', (req, res) => {
     const address = req.params.address
     const user = req.params.user
-    console.log('address', address)
 
 //     const batch = new web3.BatchRequest();
 // batch.add(web3.eth.getBalance.request('0x0000000000000000000000000000000000000000', 'latest'));
 // batch.add(contract.methods.balance(address).call.request({from: '0x0000000000000000000000000000000000000000'}));
 // batch.execute().then(...);
     const contract = contractsimple.getContract(address)
-    contract.methods.viewed(user).send(contractsimple.getDefaultAccount()).then((res)=>{
-        console.log('Created View Event on quorum', address, user, res);
-    })
+    // contract.methods.viewed(user).send(contractsimple.getDefaultAccount()).then((data)=>{
+        // console.log('Created View Event on quorum', address, user, data);
+    // })
+    console.log('Creating View Event on quorum', address, user)
 })
 
 // TODO: add edit/sign features.

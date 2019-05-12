@@ -2,8 +2,17 @@
 const library = (function() {
   const Web3 = require('web3')
 
+  const options = {
+    defaultBlock: 'latest',
+    defaultGas: 1,
+    defaultGasPrice: 0,
+    transactionBlockTimeout: 50,
+    transactionConfirmationBlocks: 1,
+    transactionPollingTimeout: 480,
+  }
+
   const NODE_PORT = 22000
-  const web3 = new Web3(new Web3.providers.HttpProvider(`http://localhost:${NODE_PORT}`))
+  const web3 = new Web3(new Web3.providers.HttpProvider(`http://localhost:${NODE_PORT}`))//, {}, options))
 
   const getRandom = items => {
     return items[Math.floor(Math.random() * items.length)];
